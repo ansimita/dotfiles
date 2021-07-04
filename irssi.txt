@@ -1,0 +1,17 @@
+# Install irssi.
+
+sudo apt-get install -y apparmor-utils apparmor-profiles-extra irssi
+sudo aa-enforce irssi
+
+# Commands to configure irssi on first run.
+
+/NETWORK ADD LiberaChat
+/SERVER ADD -network LiberaChat -port 6697 -tls -tls_verify irc.libera.chat
+
+/SET colors OFF
+/SET max_command_history 1
+/SET real_name $USER
+/SET rejoin_channels_on_reconnect OFF
+/SET server_reconnect_time -1
+
+/QUIT
