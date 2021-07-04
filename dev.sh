@@ -52,7 +52,7 @@ _clang_format() {
 	au BufWritePre *.h,*.c,*.cc,*.cpp call ClangFormatOnSave()
 	fu! ClangFormatOnSave()
 		let l:formatdiff=1
-		py3f /usr/share/vim/addons/syntax/clang-format-7.py
+		py3f /usr/share/vim/addons/syntax/clang-format-11.py
 	endfu
 	EOF
 }
@@ -148,11 +148,14 @@ _irb() {
 	if test -f ~/.irbrc; then
 		return
 	fi
-	printf 'IRB.conf[:PROMPT_MODE] = :SIMPLE\n' > ~/.irbrc
+	cat <<- EOF > ~/.irbrc
+	IRB.conf[:PROMPT_MODE] = :SIMPLE
+	IRB.conf[:SAVE_HISTORY] = nil
+	EOF
 }
 
 _lua() {
-	sudo apt-get install -y lua5.3
+	sudo apt-get install -y lua5.4
 }
 
 _mypy() {

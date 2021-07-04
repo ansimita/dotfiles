@@ -24,7 +24,7 @@ DRACULA='https://github.com/dracula'
 
 # Shell.
 
-sed -i -e '24,25d' ~/.gitconfig
+rm ~/.gitconfig
 
 sed -i -e '/^PS1/d;/^unset/d' ~/.bashrc
 
