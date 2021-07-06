@@ -56,6 +56,7 @@ cat << EOF >> ~/.vimrc
 " Added by ansimita/dotfiles/pretty.sh for Dracula theme.
 pa! dracula
 syntax enable
+let g:dracula_colorterm = 0
 colo dracula
 EOF
 

@@ -136,12 +136,7 @@ mcd() {
 # Access to a temporary file.
 
 scratchpad() {
-	if test "$TMUX"; then
-		"$EDITOR" "$SCRATCHPAD"
-	else
-		# Workaround for VIM colorscheme.
-		TERM=screen "$EDITOR" "$SCRATCHPAD"
-	fi
+	"$EDITOR" "$SCRATCHPAD"
 }
 
 EDITOR=vim
@@ -159,11 +154,5 @@ shopt -s cdspell checkjobs
 
 # shellcheck disable=SC1091
 test -f /etc/bash_completion && source /etc/bash_completion
-
-if test ! "$TMUX"; then
-	# Workaround for VIM colorscheme.
-	alias vi='TERM=screen "$EDITOR"'
-	alias vim='TERM=screen "$EDITOR"'
-fi
 
 unset HISTFILE
