@@ -59,9 +59,14 @@ syntax enable
 colo dracula
 EOF
 
-sed -i -e '/hi linenr/s/^/" /' ~/.vimrc # disable 'hi linenr'
-sed -n -e '40,48p' ~/.vimrc >> ~/.vimrc # copy to end of file
-sed -i -e '40,48d' ~/.vimrc             # cleanup
+sed -i -e '/hi linenr/s/^/" /' ~/.vimrc  # disable 'hi linenr'
+sed -n -e '40,48p' ~/.vimrc > /tmp/vimrc # cut
+cat /tmp/vimrc >> ~/.vimrc               # paste
+sed -i -e '40,48d' ~/.vimrc              # delete
+
+# Exit early if running without a desktop.
+
+test "$XDG_CURRENT_DESKTOP" || exit
 
 # Font.
 
