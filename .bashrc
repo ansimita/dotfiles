@@ -20,13 +20,17 @@
 
 # If not running interactively, don't do anything.
 
-test "$PS1" || return
+if test ! "$PS1"; then
+	return
+fi
 
 # PS1 prompt: Prints git branch only if in git repository.
 
 __branch() {
 	branch=$(git rev-parse --abbrev-ref HEAD)
-	test "$branch" && printf ' %s' "$branch"
+	if test "$branch"; then
+		printf ' %s' "$branch"
+	fi
 } 2> /dev/null
 
 # PS1 prompt: Prints exit status only if most recent command failed.
@@ -129,7 +133,9 @@ extract() {
 # Create specified directory if missing and change into it.
 
 mcd() {
-	test -d "$1" || mkdir -p "$1"
+	if test ! -d "$1"; then
+		mkdir -p "$1"
+	fi
 	cd "$1" || return
 }
 
@@ -152,7 +158,9 @@ export EDITOR LESSHISTFILE MANWIDTH SCRATCHPAD
 
 shopt -s cdspell checkjobs
 
-# shellcheck disable=SC1091
-test -f /etc/bash_completion && source /etc/bash_completion
+if test -f /etc/bash_completion; then
+	# shellcheck disable=SC1091
+	source /etc/bash_completion
+fi
 
 unset HISTFILE

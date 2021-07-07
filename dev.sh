@@ -43,8 +43,13 @@ _c() {
 _clang_format() {
 	sudo apt-get install -y clang-format
 
-	test -f ~/.vimrc || return
-	grep -q ClangFormatOnSave ~/.vimrc || cat <<- EOF >> ~/.vimrc
+	if test ! -f ~/.vimrc; then
+		return
+	fi
+	if grep -q ClangFormatOnSave ~/.vimrc; then
+		return
+	fi
+	cat <<- EOF >> ~/.vimrc
 
 	" Added by ansimita/dotfiles/dev.sh for C.
 	au BufWritePre *.h,*.c,*.cc,*.cpp call ClangFormatOnSave()
@@ -64,7 +69,9 @@ _go() {
 	upstream_version=$(wget -qO - https://golang.org/VERSION?m=text)
 	if test -d /usr/local/go; then
 		local_version=$(go version | awk '{ print $3 }')
-		test "$local_version" = "$upstream_version" && return
+		if test "$local_version" = "$upstream_version"; then
+			return
+		fi
 		sudo rm -rf /usr/local/go
 	fi
 
@@ -72,7 +79,9 @@ _go() {
 	wget -q -P /tmp "https://golang.org/dl/$gz"
 	sudo tar -C /usr/local -xzf "/tmp/$gz"
 
-	test "$local_version" && return
+	if test "$local_version"; then
+		return
+	fi
 
 	cat <<- EOF >> ~/.profile
 
@@ -97,12 +106,18 @@ _golang() {
 }
 
 _godoc() {
-	test -d /usr/local/go || return
+	if test ! -d /usr/local/go; then
+		return
+	fi
 
 	export GOBIN="$HOME/.local/bin"
-	test -d "$GOBIN" || mkdir -p "$GOBIN"
+	if test ! -d "$GOBIN"; then
+		mkdir -p "$GOBIN"
+	fi
 	export GOPATH="$HOME/Code/go"
-	test -d "$GOPATH" || mkdir -p "$GOPATH"
+	if test ! -d "$GOPATH"; then
+		mkdir -p "$GOPATH"
+	fi
 
 	local godoc
 	godoc=golang.org/x/tools/cmd/godoc
@@ -133,7 +148,9 @@ _godoc() {
 }
 
 _irb() {
-	test -f ~/.irbrc && return
+	if test -f ~/.irbrc; then
+		return
+	fi
 	printf 'IRB.conf[:PROMPT_MODE] = :SIMPLE\n' > ~/.irbrc
 }
 
@@ -171,13 +188,17 @@ _rust() {
 }
 
 _rust_vim() {
-	test -d ~/.vim/pack/plugins/start/rust.vim && return
+	if test -d ~/.vim/pack/plugins/start/rust.vim; then
+		return
+	fi
 	git clone https://github.com/rust-lang/rust.vim \
 		~/.vim/pack/plugins/start/rust.vim
 }
 
 _rustup() {
-	test -d ~/.rustup && return
+	if test -d ~/.rustup; then
+		return
+	fi
 
 	wget -qO - https://sh.rustup.rs | sh -s -- --no-modify-path -y
 
@@ -191,8 +212,9 @@ _rustup() {
 
 	export PATH="$HOME/.cargo/bin:$PATH"
 
-	test -d ~/.local/share/bash-completion/completions || \
+	if test ! -d ~/.local/share/bash-completion/completions; then
 		mkdir -p ~/.local/share/bash-completion/completions
+	fi
 	rustup completions bash > \
 		~/.local/share/bash-completion/completions/rustup
 }
@@ -202,20 +224,23 @@ _shellcheck() {
 }
 
 _vim_go() {
-	test -d ~/.vim/pack/plugins/start/vim-go && return
+	if test -d ~/.vim/pack/plugins/start/vim-go; then
+		return
+	fi
 	git clone https://github.com/fatih/vim-go.git \
 		~/.vim/pack/plugins/start/vim-go
 }
 
 case "$1" in
-	c) _c ;;
-	go) _golang ;;
-	lua) _lua ;;
-	py) _python3 ;;
-	rb) _ruby ;;
-	rs) _rust ;;
-	sh) _bash ;;
-	*) printf '%s [c|go|lua|py|rb|rs|sh]\n' "$0" 1>&2 && exit 1 ;;
+	c)	_c ;;
+	go)	_golang ;;
+	lua)	_lua ;;
+	py)	_python3 ;;
+	rb)	_ruby ;;
+	rs)	_rust ;;
+	sh)	_bash ;;
+	*)	printf '%s [c|go|lua|py|rb|rs|sh]\n' "$0" 1>&2
+		exit 1 ;;
 esac
 
 sudo apt-get install -y \

@@ -36,7 +36,10 @@ cp .vimrc ~/.vimrc
 
 # Desktop
 
-test "$WAYLAND_DISPLAY" && sudo apt-get install -y wl-clipboard
+if test "$WAYLAND_DISPLAY"; then
+	sudo apt-get install -y wl-clipboard
+fi
 
-test "$XDG_CURRENT_DESKTOP" = GNOME && \
+if test "$XDG_CURRENT_DESKTOP" = GNOME; then
 	gsettings set org.gnome.desktop.interface clock-show-date true
+fi

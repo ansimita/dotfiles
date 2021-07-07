@@ -20,12 +20,16 @@
 
 # When leaving the console clear the screen to increase privacy.
 
-test "$SHLVL" = 1 && test -x /usr/bin/clear_console && /usr/bin/clear_console -q
+if test "$SHLVL" = 1 -a -x /usr/bin/clear_console; then
+	/usr/bin/clear_console -q
+fi
 
 # Leave no trace.
 
 remove_if_exists() {
-	test -f "$1" && rm "$1"
+	if test -f "$1"; then
+		rm "$1"
+	fi
 }
 
 remove_if_exists "$HOME/.bash_history"

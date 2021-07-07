@@ -67,7 +67,9 @@ sed -i -e '40,48d' ~/.vimrc              # delete
 
 # Exit early if running without a desktop.
 
-test "$XDG_CURRENT_DESKTOP" || exit
+if test ! "$XDG_CURRENT_DESKTOP"; then
+	exit
+fi
 
 # Font.
 
@@ -76,7 +78,9 @@ sudo apt-get install -y fonts-ibm-plex
 # Terminal.
 
 DESTINATION="$HOME/Code/dracula_terminal"
-test -d "$DESTINATION" || git clone "$DRACULA/gnome-terminal" "$DESTINATION"
+if test ! -d "$DESTINATION"; then
+	git clone "$DRACULA/gnome-terminal" "$DESTINATION"
+fi
 cd "$DESTINATION" || exit
 
 ./install.sh -s Dracula --skip-dircolors # Manual entry required.
