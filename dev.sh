@@ -43,9 +43,6 @@ _c() {
 _clang_format() {
 	sudo apt-get install -y clang-format
 
-	if test ! -f ~/.vimrc; then
-		return
-	fi
 	if grep -q ClangFormatOnSave ~/.vimrc; then
 		return
 	fi
