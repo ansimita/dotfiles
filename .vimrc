@@ -49,4 +49,4 @@ hi vertsplit    none ctermfg=00
 
 nn K <Nop>
 
-se ai bs=indent,eol,start mls=1 mouse=nvi noswf nowrap ru sb spr vi=
+se ai ar bs=indent,eol,start mls=1 mouse=nvi noswf nowrap ru sb spr vi=
