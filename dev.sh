@@ -189,6 +189,7 @@ _rust() {
 
 _rust_vim() {
 	if test -d ~/.vim/pack/plugins/start/rust.vim; then
+		git -C ~/.vim/pack/plugins/start/rust.vim pull
 		return
 	fi
 	git clone https://github.com/rust-lang/rust.vim \
@@ -197,6 +198,7 @@ _rust_vim() {
 
 _rustup() {
 	if test -d ~/.rustup; then
+		rustup update
 		return
 	fi
 
@@ -225,6 +227,7 @@ _shellcheck() {
 
 _vim_go() {
 	if test -d ~/.vim/pack/plugins/start/vim-go; then
+		git -C ~/.vim/pack/plugins/start/vim-go pull
 		return
 	fi
 	git clone https://github.com/fatih/vim-go.git \
