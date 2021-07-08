@@ -21,5 +21,6 @@
 call plug#begin(stdpath('data') . '/plugged')
 " Plug 'dracula/vim', { 'as': 'dracula' }
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'rust-lang/rust.vim'
 call plug#end()

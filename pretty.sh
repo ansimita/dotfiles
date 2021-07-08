@@ -49,19 +49,7 @@ EOF
 
 # Editor.
 
-sed -i -e '41,49d;59,60d' ~/.config/nvim/init.vim
-sed -i -e '/dracula/s/^" //' ~/.config/nvim/plug.vim
-sed -i -e '/nvim-treesitter/s/^" //' ~/.config/nvim/plug.vim
-nvim --headless +PlugInstall +qa
-
-cat << PLUG_EOF >> ~/.config/nvim/plug.vim
-
-" Added by ansimita/dotfiles/pretty.sh for Dracula theme.
-let g:dracula_colorterm = 0
-colo dracula
-PLUG_EOF
-
-git -C ~/.local/share/nvim/plugged/dracula apply "$PWD/nvim/dracula.patch"
+source nvim/pretty.sh
 
 # Exit early if running without a desktop.
 

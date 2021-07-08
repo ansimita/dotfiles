@@ -20,17 +20,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if ! command -v shellcheck &> /dev/null; then
-	sudo apt-get install -y shellcheck
-fi
+sed -i -e '41,49d;59,60d' ~/.config/nvim/init.vim
+sed -i -e '/dracula/s/^" //' ~/.config/nvim/plug.vim
+sed -i -e '/nvim-treesitter/s/^" //' ~/.config/nvim/plug.vim
 
-shellcheck -s bash .bash_logout
-shellcheck -s bash .bashrc
-shellcheck dev.sh
-shellcheck -x install.sh
-shellcheck nvim/build.sh
-shellcheck -x nvim/install.sh
-shellcheck nvim/pretty.sh
-shellcheck -x pretty.sh
-shellcheck shellcheck.sh
-shellcheck ufw.sh
+nvim --headless +PlugInstall +qa
+
+cat << PLUG_EOF >> ~/.config/nvim/plug.vim
+
+" Added by ansimita/dotfiles/pretty.sh for Dracula theme.
+let g:dracula_colorterm = 0
+colo dracula
+
+" Added by ansimita/dotfiles/pretty.sh for nvim-treesitter.
+lua << EOF
+require('nvim-treesitter.configs').setup {
+  ensure_installed = { 'bash',
+                       'c',
+		       'cpp',
+		       'go',
+		       'lua',
+		       'python',
+		       'ruby',
+		       'rust' },
+  highlight = { enable = true },
+}
+EOF
+PLUG_EOF
+
+BASEPATH=$(basename "$PWD")
+if test "$BASEPATH" = dotfiles; then
+	WHERE="$PWD/nvim/dracula.patch"
+elif test "$BASEPATH" = nvim; then
+	WHERE="$PWD/dracula.patch"
+fi
+git -C ~/.local/share/nvim/plugged/dracula apply "$WHERE"
