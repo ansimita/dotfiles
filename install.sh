@@ -30,9 +30,7 @@ cp .gitconfig ~/.gitconfig
 sudo apt-get install -y tmux
 cp .tmux.conf ~/.tmux.conf
 
-sudo apt-get install -y vim-nox
-sudo apt-get purge -y vim-tiny
-cp .vimrc ~/.vimrc
+source nvim/install.sh
 
 # Desktop
 

@@ -49,21 +49,19 @@ EOF
 
 # Editor.
 
-git clone https://github.com/dracula/vim.git ~/.vim/pack/themes/start/dracula
+sed -i -e '41,49d;59,60d' ~/.config/nvim/init.vim
+sed -i -e '/dracula/s/^" //' ~/.config/nvim/plug.vim
+sed -i -e '/nvim-treesitter/s/^" //' ~/.config/nvim/plug.vim
+nvim --headless +PlugInstall +qa
 
-cat << EOF >> ~/.vimrc
+cat << PLUG_EOF >> ~/.config/nvim/plug.vim
 
 " Added by ansimita/dotfiles/pretty.sh for Dracula theme.
-pa! dracula
-syntax enable
 let g:dracula_colorterm = 0
 colo dracula
-EOF
+PLUG_EOF
 
-sed -i -e '/hi linenr/s/^/" /' ~/.vimrc  # disable 'hi linenr'
-sed -n -e '40,48p' ~/.vimrc > /tmp/vimrc # cut
-cat /tmp/vimrc >> ~/.vimrc               # paste
-sed -i -e '40,48d' ~/.vimrc              # delete
+git -C ~/.local/share/nvim/plugged/dracula apply "$PWD/nvim/dracula.patch"
 
 # Exit early if running without a desktop.
 

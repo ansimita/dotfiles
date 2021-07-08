@@ -18,35 +18,8 @@
 " OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 " SOFTWARE.
 
-let g:netrw_banner=0
-let g:netrw_hide=1
-let g:netrw_home=''
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_liststyle=3
-
-filetype indent plugin on
-
-" https://www.vi-improved.org/recommendations/#better-whitespace
-au BufWrite * :cal StripTrailingWhitespace()
-fu! StripTrailingWhitespace()
-	if !&bin && &filetype != 'diff'
-		norm mz
-		norm Hmy
-		%s/\s\+$//e
-		norm 'yz<CR>
-		norm `z
-	en
-endfu
-
-hi folded       none ctermfg=04
-hi linenr       none ctermfg=15
-hi statusline   none ctermfg=15
-hi statuslinenc none ctermfg=07
-hi tabline      none ctermfg=07
-hi tablinefill  none ctermfg=07
-hi tablinesel   none ctermfg=00 ctermbg=07
-hi vertsplit    none ctermfg=00
-
-nn K <Nop>
-
-se ai ar bs=indent,eol,start mls=1 mouse=nvi noswf nowrap ru sb spr vi=
+call plug#begin(stdpath('data') . '/plugged')
+" Plug 'dracula/vim', { 'as': 'dracula' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'rust-lang/rust.vim'
+call plug#end()

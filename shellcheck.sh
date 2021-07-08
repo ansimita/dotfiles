@@ -27,7 +27,9 @@ fi
 shellcheck -s bash .bash_logout
 shellcheck -s bash .bashrc
 shellcheck dev.sh
-shellcheck install.sh
+shellcheck -x install.sh
+shellcheck nvim/build.sh
+shellcheck -x nvim/install.sh
 shellcheck pretty.sh
 shellcheck shellcheck.sh
 shellcheck ufw.sh

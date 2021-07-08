@@ -145,14 +145,17 @@ scratchpad() {
 	"$EDITOR" "$SCRATCHPAD"
 }
 
-EDITOR=vim
+EDITOR=nvim
 HISTCONTROL='erasedups:ignoreboth'
 LESSHISTFILE=-
 MANWIDTH=80
 SCRATCHPAD=/tmp/scratchpad
 PS1="\$(__exit)\u \h \w\$(__branch)\n\$ "
 
-alias ll='ls -hAlp' serve='python3 -m http.server'
+alias ll='ls -hAlp'
+alias serve='python3 -m http.server'
+alias vi='"$EDITOR"'
+alias vim='"$EDITOR"'
 
 export EDITOR LESSHISTFILE MANWIDTH SCRATCHPAD
 

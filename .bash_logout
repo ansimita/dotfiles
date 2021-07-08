@@ -33,6 +33,8 @@ remove_if_exists() {
 }
 
 remove_if_exists "$HOME/.bash_history"
+remove_if_exists "$HOME/.local/share/nvim/.netrwhist"
+remove_if_exists "$HOME/.local/share/nvim/shada/main.shada"
 remove_if_exists "$HOME/.lesshst"
 remove_if_exists "$HOME/.python_history"
 remove_if_exists "$HOME/.vim/.netrwhist"

@@ -42,11 +42,12 @@ _c() {
 
 _clang_format() {
 	sudo apt-get install -y clang-format
+	sudo apt-get install -y --no-install-recommends python3-neovim
 
-	if grep -q ClangFormatOnSave ~/.vimrc; then
+	if grep -q ClangFormatOnSave ~/.config/nvim/plug.vim; then
 		return
 	fi
-	cat <<- EOF >> ~/.vimrc
+	cat <<- EOF >> ~/.config/nvim/plug.vim
 
 	" Added by ansimita/dotfiles/dev.sh for C.
 	au BufWritePre *.h,*.c,*.cc,*.cpp call ClangFormatOnSave()
@@ -185,12 +186,12 @@ _rust() {
 }
 
 _rust_vim() {
-	if test -d ~/.vim/pack/plugins/start/rust.vim; then
-		git -C ~/.vim/pack/plugins/start/rust.vim pull
+	if grep -q "^Plug 'rust-lang/rust-vim'" ~/.config/nvim/plug.vim; then
+		nvim --headless +PlugUpdate +qa
 		return
 	fi
-	git clone https://github.com/rust-lang/rust.vim \
-		~/.vim/pack/plugins/start/rust.vim
+	sed -i -e '/rust.vim/s/^" //' ~/.config/nvim/plug.vim
+	nvim --headless +PlugInstall +qa
 }
 
 _rustup() {
@@ -223,12 +224,12 @@ _shellcheck() {
 }
 
 _vim_go() {
-	if test -d ~/.vim/pack/plugins/start/vim-go; then
-		git -C ~/.vim/pack/plugins/start/vim-go pull
+	if grep -q "^Plug 'fatih/vim-go'" ~/.config/nvim/plug.vim; then
+		nvim --headless +PlugUpdate +qa
 		return
 	fi
-	git clone https://github.com/fatih/vim-go.git \
-		~/.vim/pack/plugins/start/vim-go
+	sed -i -e '/vim-go/s/^" //' ~/.config/nvim/plug.vim
+	nvim --headless +PlugInstall +qa
 }
 
 case "$1" in
