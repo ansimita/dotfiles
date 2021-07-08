@@ -22,32 +22,25 @@
 
 mkdest() {
 	DESTPATH="$1"
-	test -d "$DESTPATH" || mkdir -p "$DESTPATH"
+	if test ! -d "$DESTPATH"; then
+		mkdir -p "$DESTPATH"
+	fi
 }
 
-# https://github.com/neovim/neovim/releases/tag/v0.5.0
-CHECKSUM=6305a1cab22433bf7871cbfcdb76f0013314f4a6c04e56e1547a6925df17240b
-
-# Install dependencies.
-
-sudo apt-get install -y fuse
-
-# Download nvim.appimage to $DESTPATH as nvim.
-
-mkdest "$HOME/.local/bin"
-wget -q -P "$DESTPATH" \
-	https://github.com/neovim/neovim/releases/download/v0.5.0/nvim.appimage
-
-APPIMAGE="$DESTPATH/nvim.appimage"
-MUSKCEHC=$(shasum -a 256 "$APPIMAGE" | awk '{ print $1 }')
-if test "$CHECKSUM" != "$MUSKCEHC"; then
-	printf '           File: %s\n' "$APPIMAGE" 1>&2
-	printf '         SHA256: %s\n' "$MUSKCEHC" 1>&2
-	printf 'Expected SHA256: %s\n' "$CHECKSUM" 1>&2
-	exit 1
-fi
-chmod u+x "$APPIMAGE"
-mv "$APPIMAGE" "$DESTPATH/nvim"
+case "$1" in
+	appimage)
+		source nvim/appimage.sh
+	;;
+	build)
+		# Another bash process is created instead
+		# as the build script seems to exit early.
+		bash nvim/build.sh
+	;;
+	*)
+		printf 'usage: install.sh [appimage|build]\n' 1>&2
+		exit 1
+	;;
+esac
 
 # Set up the neovim configuration file.
 

@@ -20,18 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if ! command -v shellcheck &> /dev/null; then
-	sudo apt-get install -y shellcheck
-fi
+# Reference: https://github.com/neovim/neovim/wiki/Building-Neovim
 
-shellcheck -s bash .bash_logout
-shellcheck -s bash .bashrc
-shellcheck dev.sh
-shellcheck -x install.sh
-shellcheck nvim/appimage.sh
-shellcheck nvim/build.sh
-shellcheck -x nvim/install.sh
-shellcheck nvim/pretty.sh
-shellcheck -x pretty.sh
-shellcheck shellcheck.sh
-shellcheck ufw.sh
+sudo apt-get install -y \
+	ninja-build \
+	gettext \
+	libtool \
+	libtool-bin \
+	autoconf \
+	automake \
+	cmake \
+	g++ \
+	pkg-config \
+	unzip
+
+wget -q -P /tmp \
+	https://github.com/neovim/neovim/archive/refs/tags/v0.5.0.tar.gz
+
+cd /tmp || exit 1
+
+tar xzf v0.5.0.tar.gz
+
+cd neovim-0.5.0 || exit 1
+
+make CMAKE_BUILD_TYPE=MinSizeRel \
+	CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/.local"
+make install

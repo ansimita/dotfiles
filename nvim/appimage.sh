@@ -20,18 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if ! command -v shellcheck &> /dev/null; then
-	sudo apt-get install -y shellcheck
+# https://github.com/neovim/neovim/releases/tag/v0.5.0
+CHECKSUM=6305a1cab22433bf7871cbfcdb76f0013314f4a6c04e56e1547a6925df17240b
+
+# Install dependencies.
+
+sudo apt-get install -y fuse
+
+# Download nvim.appimage to $DESTPATH as nvim.
+
+DESTPATH="$HOME/.local/bin"
+if test ! -d "$DESTPATH"; then
+	mkdir -p "$DESTPATH"
 fi
 
-shellcheck -s bash .bash_logout
-shellcheck -s bash .bashrc
-shellcheck dev.sh
-shellcheck -x install.sh
-shellcheck nvim/appimage.sh
-shellcheck nvim/build.sh
-shellcheck -x nvim/install.sh
-shellcheck nvim/pretty.sh
-shellcheck -x pretty.sh
-shellcheck shellcheck.sh
-shellcheck ufw.sh
+wget -q -P "$DESTPATH" \
+	https://github.com/neovim/neovim/releases/download/v0.5.0/nvim.appimage
+
+APPIMAGE="$DESTPATH/nvim.appimage"
+MUSKCEHC=$(shasum -a 256 "$APPIMAGE" | awk '{ print $1 }')
+if test "$CHECKSUM" != "$MUSKCEHC"; then
+	printf '           File: %s\n' "$APPIMAGE" 1>&2
+	printf '         SHA256: %s\n' "$MUSKCEHC" 1>&2
+	printf 'Expected SHA256: %s\n' "$CHECKSUM" 1>&2
+	exit 1
+fi
+
+chmod u+x "$APPIMAGE"
+
+mv "$APPIMAGE" "$DESTPATH/nvim"

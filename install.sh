@@ -30,7 +30,7 @@ cp .gitconfig ~/.gitconfig
 sudo apt-get install -y tmux
 cp .tmux.conf ~/.tmux.conf
 
-source nvim/install.sh
+source nvim/install.sh build
 
 # Desktop
 
